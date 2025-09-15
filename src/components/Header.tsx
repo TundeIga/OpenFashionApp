@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: theme.spacing.md,
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.hmBg,
   },
   search: {
     flex: 1,

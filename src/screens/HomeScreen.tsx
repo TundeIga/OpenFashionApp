@@ -4,6 +4,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -11,19 +12,31 @@ import Header from "../components/Header";
 import { theme } from "../utils/theme";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { RootParamList } from "../types/navigation";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const bannerImage = {
-  uri: "https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80", // Model in beige outfit
+const bannerImage = require("../../assets/homeModel.png");
+
+const image = {
+  require: "/assets/homeModel.png",
 };
 
 export default function HomeScreen() {
+  const inset = useSafeAreaInsets();
   const navigation =
     useNavigation<DrawerNavigationProp<RootParamList, "Home">>();
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        paddingTop: inset.top,
+        paddingLeft: inset.left,
+        paddingRight: inset.right,
+        flex: 1,
+      }}
+    >
       <Header />
 
       {/* Banner */}
+
       <ImageBackground
         source={bannerImage}
         style={styles.banner}
@@ -45,12 +58,6 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: {
-    flexDirection: "row",
-    padding: theme.spacing.md,
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
   banner: {
     flex: 1,
     justifyContent: "center",

@@ -14,6 +14,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { theme } from "../utils/theme";
 import { useState } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const sections = [
   {
@@ -31,13 +32,18 @@ const sections = [
 ];
 
 export default function CustomDrawer(props: DrawerContentComponentProps) {
-  const [activeGender, setActiveGender] = useState("Women"); // Track active (orange dot)
+  const inset = useSafeAreaInsets();
+  const [activeGender, setActiveGender] = useState("Women");
   const { navigation } = props;
 
   return (
     <DrawerContentScrollView
       {...props}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={{
+        paddingTop: inset.top,
+        paddingLeft: inset.left,
+        paddingRight: inset.right,
+      }}
     >
       <TouchableOpacity
         style={styles.close}
