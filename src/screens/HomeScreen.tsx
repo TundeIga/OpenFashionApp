@@ -21,13 +21,6 @@ export default function HomeScreen() {
     useNavigation<DrawerNavigationProp<RootParamList, "Home">>();
   return (
     <View style={styles.container}>
-      {/* Custom Header */}
-      {/* <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <Icon name="menu" size={24} color={theme.colors.text} />
-        </TouchableOpacity>
-    
-      </View> */}
       <Header />
 
       {/* Banner */}
@@ -46,9 +39,6 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
       </ImageBackground>
-
-      {/* Add product grid or other content below banner */}
-      {/* e.g., <FlatList ... /> as before */}
     </View>
   );
 }
@@ -61,8 +51,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  banner: { flex: 1, justifyContent: "center" }, // Or fixed height if needed
-  overlay: { alignItems: "center", padding: theme.spacing.lg },
+  banner: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  overlay: {
+    alignItems: "center",
+    padding: theme.spacing.lg,
+  },
   title: {
     fontFamily: theme.fonts.bold,
     fontSize: 32,
@@ -76,5 +72,8 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.sm,
     borderRadius: 20,
   },
-  buttonText: { color: "#FFF", fontFamily: theme.fonts.regular },
+  buttonText: {
+    color: "#FFF",
+    fontFamily: theme.fonts.regular,
+  },
 });

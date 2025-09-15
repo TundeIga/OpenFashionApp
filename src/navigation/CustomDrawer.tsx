@@ -11,11 +11,10 @@ import {
   StyleSheet,
   Linking,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons"; // Or FontAwesome for socials
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { theme } from "../utils/theme";
 import { useState } from "react";
 
-// Updated sections - keeping as-is for now, but prepared for nested data if needed
 const sections = [
   {
     title: "Categories",
