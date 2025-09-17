@@ -4,6 +4,7 @@ import { theme } from "../utils/theme";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { RootParamList } from "../types/navigation";
+import LogoSvg from '../../assets/icons/Logo.svg'
 
 export default function Header() {
   const navigation =
@@ -21,6 +22,7 @@ export default function Header() {
         onChangeText={(text) => console.log("Search:", text)} // Placeholder handler
       />
       <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+        <LogoSvg/>
         <Icon name="shopping-cart" size={24} color={theme.colors.text} />
       </TouchableOpacity>
     </View>
