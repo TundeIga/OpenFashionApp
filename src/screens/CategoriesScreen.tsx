@@ -4,7 +4,7 @@ import { RootParamList, RootRouteProps } from "../types/navigation";
 
 export default function CategoryScreen() {
   const route = useRoute<RootRouteProps<"Category">>(); // Ensure RootRouteProps is defined
-  const { category } = route.params;
+  const { category } = route.params || {category: 'Unknown'};
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{category} Category</Text>

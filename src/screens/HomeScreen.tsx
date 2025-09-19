@@ -46,7 +46,7 @@ export default function HomeScreen() {
           <Text style={styles.title}>LUXURY FASHION & ACCESSORIES</Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Collection")}
+            onPress={() => navigation.navigate("Collection", {collection: 'Women'})}
           >
             <Text style={styles.buttonText}>EXPLORE COLLECTION</Text>
           </TouchableOpacity>
@@ -67,11 +67,13 @@ const styles = StyleSheet.create({
     padding: theme.spacing.lg,
   },
   title: {
-    fontFamily: theme.fonts.bold,
-    fontSize: 32,
+    fontFamily: theme.fonts.bodoniItalic,
+    fontSize: 39,
     color: "#333",
     textAlign: "center",
     marginBottom: theme.spacing.lg,
+   lineHeight: 44,
+    letterSpacing: 2,
   },
   button: {
     backgroundColor: "#333",

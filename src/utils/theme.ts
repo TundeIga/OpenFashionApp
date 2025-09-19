@@ -6,5 +6,10 @@ export const theme = {
     hmBg: "#E7EAEF",
   },
   spacing: { xs: 4, sm: 8, md: 16, lg: 24 },
-  fonts: { regular: "Roboto-Regular", bold: "Roboto-Bold" },
+  fonts: {
+    regular: "Roboto-Regular",
+    bold: "Roboto-Bold",
+    bodoni: "Bodoni-Bold",
+    bodoniItalic: "Bodoni-Italic",
+  },
 };

@@ -71,7 +71,10 @@ export default function CustomDrawer(props: DrawerContentComponentProps) {
                   props.navigation.navigate("Home", { gender: item });
                 }}
               >
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+
                 <Text style={styles.itemText}>{item}</Text>
+                </View>
                 {activeGender === item && <View style={styles.activeDot} />}
               </TouchableOpacity>
             );
@@ -144,7 +147,7 @@ export default function CustomDrawer(props: DrawerContentComponentProps) {
         <TouchableOpacity
           onPress={() => Linking.openURL("https://youtube.com")}
         >
-          <Icon name="youtube" size={24} color={theme.colors.text} />
+          <Icon name="youtube_activity" size={24} color={theme.colors.text} />
         </TouchableOpacity>
       </View>
     </DrawerContentScrollView>
@@ -157,7 +160,9 @@ const styles = StyleSheet.create({
   genderItem: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: 'space-between',
     paddingVertical: theme.spacing.sm,
+    // backgroundColor: 'white'
   },
   activeDot: {
     width: 8,

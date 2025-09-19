@@ -29,7 +29,6 @@ export default function Header() {
   );
 }
 
-// Styles unchanged
 
 const styles = StyleSheet.create({
   container: {
