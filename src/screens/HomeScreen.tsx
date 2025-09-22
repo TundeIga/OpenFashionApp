@@ -1,38 +1,82 @@
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
   ImageBackground,
   TouchableOpacity,
   StyleSheet,
-  Image,
   StatusBar,
+  Animated,
+  Easing,
 } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import Header from "../components/Header";
 import { theme } from "../utils/theme";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { RootParamList } from "../types/navigation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useCallback } from "react";
+
+import RectangleFill from "../../assets/icons/Rectangle fill.svg";
+import RectangleOutline from "../../assets/icons/Rectangle outline.svg";
 
 const bannerImage = require("../../assets/homeModel.png");
 
 
+const SLIDE_INTERVAL_MS = 3000;
+
+const BUTTON_WIDTH = 253;
 
 export default function HomeScreen() {
   const inset = useSafeAreaInsets();
   const navigation =
     useNavigation<DrawerNavigationProp<RootParamList, "Home">>();
 
-   useFocusEffect(
-     useCallback(() => {
-       StatusBar.setBackgroundColor(theme.colors.hmBg, true);
-       StatusBar.setBarStyle("dark-content", true);
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBackgroundColor(theme.colors.hmBg, true);
+      StatusBar.setBarStyle("dark-content", true);
+      StatusBar.setTranslucent(false);
+    }, [])
+  );
 
-       StatusBar.setTranslucent(false);
-     }, [])
-   );
+  // Labels to cycle through
+  const items = ["EXPLORE COLLECTION", "NEW DROP", "LIMITED COLLECTION"];
+
+  // active index & animation value
+  const [activeIndex, setActiveIndex] = useState(0);
+  const translateX = useRef(new Animated.Value(0)).current;
+
+  // Slide to index (animated)
+  const slideTo = (index: number) => {
+    Animated.timing(translateX, {
+      toValue: -index * BUTTON_WIDTH,
+      duration: 400,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+    setActiveIndex(index);
+  };
+
+  // Auto cycle interval
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => {
+        const next = (prev + 1) % items.length;
+        // animate
+        slideTo(next);
+        return next;
+      });
+    }, SLIDE_INTERVAL_MS);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+ 
+  const onPressButton = () => {
+    navigation.navigate("Collection", { collection: "Women" });
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.hmBg }}>
       <StatusBar
@@ -51,8 +95,6 @@ export default function HomeScreen() {
       >
         <Header />
 
-        {/* Banner */}
-
         <ImageBackground
           source={bannerImage}
           style={styles.banner}
@@ -65,15 +107,42 @@ export default function HomeScreen() {
             <Text style={styles.title}> & ACCESSORIES</Text>
           </View>
 
-         
+          {/* Sliding button */}
           <TouchableOpacity
-            style={[styles.buttonContainer]}
-            onPress={() =>
-              navigation.navigate("Collection", { collection: "Women" })
-            }
+            activeOpacity={0.9}
+            onPress={onPressButton}
+            style={[
+              styles.buttonContainer,
+              { bottom: 80 + inset.bottom }, 
+            ]}
           >
-            <Text style={styles.buttonText}>EXPLORE COLLECTION</Text>
+            {/* animated sliding row */}
+            <Animated.View
+              style={[
+                styles.slidesRow,
+                {
+                  transform: [{ translateX }],
+                },
+              ]}
+            >
+              {items.map((label) => (
+                <View key={label} style={styles.slideItem}>
+                  <Text style={styles.buttonText}>{label}</Text>
+                </View>
+              ))}
+            </Animated.View>
           </TouchableOpacity>
+
+          {/* Indicators (rhombus SVGs) */}
+          <View style={styles.indicatorsContainer}>
+            {items.map((_, i) =>
+              i === activeIndex ? (
+                <RectangleFill key={`ind-${i}`} width={12} height={12} />
+              ) : (
+                <RectangleOutline key={`ind-${i}`} width={12} height={12} />
+              )
+            )}
+          </View>
         </ImageBackground>
       </View>
     </View>
@@ -99,19 +168,39 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: "absolute",
-    bottom: 120, 
     alignSelf: "center",
-    width: 253,
-    backgroundColor: "#333",
-    paddingHorizontal: theme.spacing.lg,
-    paddingVertical: theme.spacing.sm,
-    borderRadius: 20,
-    opacity: 0.7,
+    width: BUTTON_WIDTH,
+    height: 48,
+    backgroundColor: "rgba(51,51,51,0.4)", 
+    borderRadius: 30,
+    overflow: "hidden",
+    justifyContent: "center",
   },
+  slidesRow: {
+    flexDirection: "row",
+    width: BUTTON_WIDTH * 3,
+  },
+  slideItem: {
+    width: BUTTON_WIDTH,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: theme.spacing.lg,
+  },
+
   buttonText: {
-    color: "#FFF",
+    color: "#fff",
     fontFamily: theme.fonts.regular,
     textAlign: "center",
+    fontSize: 16,
+  },
+
+  indicatorsContainer: {
+    position: "absolute",
+    bottom: 100,
+    alignSelf: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 8,
   },
 });
-
