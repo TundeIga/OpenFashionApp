@@ -65,7 +65,7 @@ export default function HomeScreen() {
             <Text style={styles.title}> & ACCESSORIES</Text>
           </View>
 
-          {/* Button fixed near bottom */}
+         
           <TouchableOpacity
             style={[styles.buttonContainer]}
             onPress={() =>
