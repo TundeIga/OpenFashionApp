@@ -8,22 +8,22 @@ import {
   StatusBar,
   Animated,
   Easing,
+  ScrollView,
 } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import Header from "../components/Header";
-import { theme } from "../utils/theme";
+import Header from "../../components/Header";
+import { theme } from "../../utils/theme";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { RootParamList } from "../types/navigation";
+import { RootParamList } from "../../types/navigation";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import RectangleFill from "../../assets/icons/Rectangle fill.svg";
-import RectangleOutline from "../../assets/icons/Rectangle outline.svg";
+import RectangleFill from "../../../assets/icons/Rectangle fill.svg";
+import RectangleOutline from "../../../assets/icons/Rectangle outline.svg";
+import NewArrival from "./NewArrival";
 
-const bannerImage = require("../../assets/homeModel.png");
-
+const bannerImage = require("../../../assets/homeModel.png");
 
 const SLIDE_INTERVAL_MS = 3000;
-
 const BUTTON_WIDTH = 253;
 
 export default function HomeScreen() {
@@ -70,9 +70,8 @@ export default function HomeScreen() {
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
- 
   const onPressButton = () => {
     navigation.navigate("Collection", { collection: "Women" });
   };
@@ -85,71 +84,95 @@ export default function HomeScreen() {
         translucent={false}
       />
 
+      {/* Fixed Header */}
       <View
         style={{
           paddingTop: inset.top,
           paddingLeft: inset.left,
           paddingRight: inset.right,
-          flex: 1,
         }}
       >
         <Header />
-
-        <ImageBackground
-          source={bannerImage}
-          style={styles.banner}
-          resizeMode="contain"
-        >
-          {/* Titles */}
-          <View style={styles.overlay}>
-            <Text style={[styles.title, { marginLeft: -110 }]}>LUXURY </Text>
-            <Text style={[styles.title, { marginLeft: -70 }]}> FASHION </Text>
-            <Text style={styles.title}> & ACCESSORIES</Text>
-          </View>
-
-          {/* Sliding button */}
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={onPressButton}
-            style={[
-              styles.buttonContainer,
-              { bottom: 80 + inset.bottom }, 
-            ]}
-          >
-            {/* animated sliding row */}
-            <Animated.View
-              style={[
-                styles.slidesRow,
-                {
-                  transform: [{ translateX }],
-                },
-              ]}
-            >
-              {items.map((label) => (
-                <View key={label} style={styles.slideItem}>
-                  <Text style={styles.buttonText}>{label}</Text>
-                </View>
-              ))}
-            </Animated.View>
-          </TouchableOpacity>
-
-          {/* Indicators (rhombus SVGs) */}
-          <View style={styles.indicatorsContainer}>
-            {items.map((_, i) =>
-              i === activeIndex ? (
-                <RectangleFill key={`ind-${i}`} width={12} height={12} />
-              ) : (
-                <RectangleOutline key={`ind-${i}`} width={12} height={12} />
-              )
-            )}
-          </View>
-        </ImageBackground>
       </View>
+
+      {/* Scrollable Content */}
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.bannerContainer}>
+          <ImageBackground
+            source={bannerImage}
+            style={styles.banner}
+            resizeMode="contain"
+          >
+            {/* Titles */}
+            <View style={styles.overlay}>
+              <Text style={[styles.title, { marginLeft: -110 }]}>LUXURY </Text>
+              <Text style={[styles.title, { marginLeft: -70 }]}> FASHION </Text>
+              <Text style={styles.title}> & ACCESSORIES</Text>
+            </View>
+
+            {/* Sliding button */}
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={onPressButton}
+              style={[styles.buttonContainer, { bottom: 80 + inset.bottom }]}
+            >
+              {/* animated sliding row */}
+              <Animated.View
+                style={[
+                  styles.slidesRow,
+                  {
+                    transform: [{ translateX }],
+                  },
+                ]}
+              >
+                {items.map((label) => (
+                  <View key={label} style={styles.slideItem}>
+                    <Text style={styles.buttonText}>{label}</Text>
+                  </View>
+                ))}
+              </Animated.View>
+            </TouchableOpacity>
+
+            {/* Indicators (rhombus SVGs) */}
+            <View style={styles.indicatorsContainer}>
+              {items.map((_, i) =>
+                i === activeIndex ? (
+                  <RectangleFill key={`ind-${i}`} width={12} height={12} />
+                ) : (
+                  <RectangleOutline key={`ind-${i}`} width={12} height={12} />
+                )
+              )}
+            </View>
+          </ImageBackground>
+        </View>
+
+        <NewArrival />
+
+        {/* Add more components/sections here */}
+        {/* 
+        <YourNextComponent />
+        <AnotherComponent />
+        */}
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  bannerContainer: {
+    flex: 1,
+    minHeight: 600, // Ensure minimum height but allow flexibility
+  },
   banner: {
     flex: 1,
     justifyContent: "center",
@@ -169,9 +192,10 @@ const styles = StyleSheet.create({
   buttonContainer: {
     position: "absolute",
     alignSelf: "center",
+    bottom: 120, // Adjusted from dynamic bottom positioning
     width: BUTTON_WIDTH,
     height: 48,
-    backgroundColor: "rgba(51,51,51,0.4)", 
+    backgroundColor: "rgba(51,51,51,0.4)",
     borderRadius: 30,
     overflow: "hidden",
     justifyContent: "center",
@@ -186,14 +210,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: theme.spacing.lg,
   },
-
   buttonText: {
     color: "#fff",
     fontFamily: theme.fonts.regular,
     textAlign: "center",
     fontSize: 16,
   },
-
   indicatorsContainer: {
     position: "absolute",
     bottom: 100,

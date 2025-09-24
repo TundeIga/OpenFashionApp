@@ -1,8 +1,8 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import CustomDrawer from "./CustomDrawer";
-import HomeScreen from "../screens/HomeScreen";
-import AboutScreen from "../screens/AboutScreen"; // Create placeholders for these
+import HomeScreen from "../screens/Home/HomeScreen";
+import AboutScreen from "../screens/AboutScreen";
 import ContactScreen from "../screens/ContactScreen";
 import BlogScreen from "../screens/BlogScreen";
 import StoreLocatorScreen from "../screens/StoreLocatorScreen";

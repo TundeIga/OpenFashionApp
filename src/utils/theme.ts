@@ -11,5 +11,6 @@ export const theme = {
     bold: "Roboto-Bold",
     bodoni: "Bodoni-Bold",
     bodoniItalic: "Bodoni-Italic",
+    tenorSans: "TenorSans-Regular",
   },
 };

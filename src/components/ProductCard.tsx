@@ -9,25 +9,36 @@ interface Props {
 
 export const ProductCard: React.FC<Props> = ({ product, onPress }) => (
   <TouchableOpacity style={styles.card} onPress={onPress}>
-    <Image source={{ uri: product.image }} style={styles.image} />
-    <Text style={styles.title}>{product.title}</Text>
-    <Text style={styles.price}>${product.price}</Text>
+    {/* <Image source={{ uri: product.image }} style={styles.image} /> */}
+    <Image source={require('../../assets/homeModel.png')} style={styles.image} />
+    <Text style={styles.title}>21WN reversible angora cardigan</Text>
+    <Text style={styles.price}>$120</Text>
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
   card: {
-    width: "48%", // 2-column grid
+    width: "48%",
     margin: theme.spacing.sm,
-    backgroundColor: theme.colors.background,
-    borderRadius: 8,
     overflow: "hidden",
   },
-  image: { width: "100%", height: 150, resizeMode: "cover" },
-  title: { fontFamily: theme.fonts.regular, padding: theme.spacing.sm },
-  price: {
-    fontFamily: theme.fonts.bold,
-    color: theme.colors.primary,
+  image: {
+    width: "100%",
+    height: 200,
+    resizeMode: "cover",
+  },
+  title: {
+    fontFamily: theme.fonts.tenorSans,
     padding: theme.spacing.sm,
+    textAlign: "center",
+    fontSize: 12,
+  },
+  price: {
+    fontFamily: theme.fonts.tenorSans,
+    color: theme.colors.primary,
+    // padding: theme.spacing.sm,
+    textAlign: "center",
+    fontSize: 15,
+
   },
 });

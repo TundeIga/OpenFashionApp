@@ -8,6 +8,7 @@ export default function App() {
     "Bodoni-Italic": require("./assets/fonts/BodoniModa_28pt-BoldItalic.ttf"),
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
+    "TenorSans-Regular": require("./assets/fonts/TenorSans-Regular.ttf")
   });
 
   if (!fontsLoaded) return null;
