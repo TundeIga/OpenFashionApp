@@ -8,7 +8,7 @@ import {
   Easing,
   StatusBar,
 } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import RectangleFill from "../../../assets/icons/Rectangle fill.svg";
 import RectangleOutline from "../../../assets/icons/Rectangle outline.svg";
 import { theme } from "../../utils/theme";
@@ -24,44 +24,43 @@ const BUTTON_WIDTH = 253;
 
 export default function HeroSection() {
   const inset = useSafeAreaInsets();
-  const navigation =
-      useNavigation<DrawerNavigationProp<RootParamList>>();
+  const navigation = useNavigation<DrawerNavigationProp<RootParamList>>();
 
-    const items = ["EXPLORE COLLECTION", "NEW DROP", "LIMITED COLLECTION"];
-  
-    // active index & animation value
-    const [activeIndex, setActiveIndex] = useState(0);
-    const translateX = useRef(new Animated.Value(0)).current;
-  
-    // Slide to index (animated)
-    const slideTo = (index: number) => {
-      Animated.timing(translateX, {
-        toValue: -index * BUTTON_WIDTH,
-        duration: 400,
-        easing: Easing.out(Easing.cubic),
-        useNativeDriver: true,
-      }).start();
-      setActiveIndex(index);
-    };
-  
-    // Auto cycle interval
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setActiveIndex((prev) => {
-          const next = (prev + 1) % items.length;
-          // animate
-          slideTo(next);
-          return next;
-        });
-      }, SLIDE_INTERVAL_MS);
-  
-      return () => clearInterval(interval);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-  
-    const onPressButton = () => {
-      navigation.navigate("Collection", { collection: "Women" });
-    };
+  const items = ["EXPLORE COLLECTION", "NEW DROP", "LIMITED COLLECTION"];
+
+  // active index & animation value
+  const [activeIndex, setActiveIndex] = useState(0);
+  const translateX = useRef(new Animated.Value(0)).current;
+
+  // Slide to index (animated)
+  const slideTo = (index: number) => {
+    Animated.timing(translateX, {
+      toValue: -index * BUTTON_WIDTH,
+      duration: 400,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+    setActiveIndex(index);
+  };
+
+  // Auto cycle interval
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => {
+        const next = (prev + 1) % items.length;
+        // animate
+        slideTo(next);
+        return next;
+      });
+    }, SLIDE_INTERVAL_MS);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onPressButton = () => {
+    navigation.navigate("Collection", { collection: "Women" });
+  };
   return (
     <View style={styles.bannerContainer}>
       <ImageBackground
@@ -80,7 +79,7 @@ export default function HeroSection() {
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={onPressButton}
-          style={[styles.buttonContainer, { bottom: 80 + inset.bottom }]}
+          style={[styles.buttonContainer, { bottom: 40  }]}
         >
           {/* animated sliding row */}
           <Animated.View
@@ -114,9 +113,10 @@ export default function HeroSection() {
   );
 }
 
-const styles = StyleSheet.create({bannerContainer: {
+const styles = StyleSheet.create({
+  bannerContainer: {
     flex: 1,
-    minHeight: 600, // Ensure minimum height but allow flexibility
+    minHeight: 650,
   },
   banner: {
     flex: 1,
@@ -137,7 +137,6 @@ const styles = StyleSheet.create({bannerContainer: {
   buttonContainer: {
     position: "absolute",
     alignSelf: "center",
-    bottom: 120, // Adjusted from dynamic bottom positioning
     width: BUTTON_WIDTH,
     height: 48,
     backgroundColor: "rgba(51,51,51,0.4)",
@@ -163,10 +162,11 @@ const styles = StyleSheet.create({bannerContainer: {
   },
   indicatorsContainer: {
     position: "absolute",
-    bottom: 100,
+    bottom: 18,
     alignSelf: "center",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 8,
-  },})
+  },
+});

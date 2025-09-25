@@ -40,16 +40,14 @@ export default function HomeScreen() {
     }, [])
   );
 
-
   return (
-    <View style={{ flex: 1,  }}>
+    <View style={{ flex: 1 }}>
       <StatusBar
         barStyle="dark-content"
         backgroundColor={theme.colors.hmBg}
         translucent={false}
       />
 
-      {/* Fixed Header */}
       <View
         style={{
           paddingTop: inset.top,
@@ -60,17 +58,14 @@ export default function HomeScreen() {
         <Header />
       </View>
 
-      {/* Scrollable Content */}
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-
-<HeroSection/>
+        <HeroSection />
         <NewArrival />
-
-
       </ScrollView>
     </View>
   );
@@ -83,5 +78,4 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
   },
- 
 });
