@@ -4,6 +4,7 @@ export const theme = {
     background: "#FFF",
     text: "#333",
     hmBg: "#E7EAEF",
+    greyScale: "#888888",
   },
   spacing: { xs: 4, sm: 8, md: 16, lg: 24 },
   fonts: {
