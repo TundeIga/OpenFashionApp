@@ -10,6 +10,7 @@ import CartScreen from "../screens/CartScreen";
 import ApparelScreen from "../screens/ApparelScreen";
 import CategoryScreen from "../screens/CategoriesScreen";
 import CollectionScreen from "../screens/CollectionScreen";
+import ProductDetail from "../components/ProductDetail";
 // Add subcategory screens like ApparelScreen, etc.
 
 const Drawer = createDrawerNavigator();
@@ -33,6 +34,7 @@ export default function AppNavigator() {
         <Drawer.Screen name="Collection" component={CollectionScreen} />
         <Drawer.Screen name="Category" component={CategoryScreen} />
         <Drawer.Screen name="Apparel" component={ApparelScreen} />
+        <Drawer.Screen name="ProductDetail" component={ProductDetail} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

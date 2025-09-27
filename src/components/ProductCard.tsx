@@ -9,10 +9,9 @@ interface Props {
 
 export const ProductCard: React.FC<Props> = ({ product, onPress }) => (
   <TouchableOpacity style={styles.card} onPress={onPress}>
-    {/* <Image source={{ uri: product.image }} style={styles.image} /> */}
-    <Image source={require('../../assets/homeModel.png')} style={styles.image} />
-    <Text style={styles.title}>21WN reversible angora cardigan</Text>
-    <Text style={styles.price}>$120</Text>
+    <Image source={{ uri: product.image }} style={styles.image} />
+    <Text style={styles.title}>{product.title}</Text>
+    <Text style={styles.price}>${product.price}</Text>
   </TouchableOpacity>
 );
 

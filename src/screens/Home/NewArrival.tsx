@@ -1,32 +1,102 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
+import React, { useState, useEffect } from "react";
 import { ProductCard } from "../../components/ProductCard";
 import { theme } from "../../utils/theme";
 import LineSvg from "../../../assets/icons/3.svg";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { useNavigation } from "@react-navigation/native";
+import { RootParamList } from "../../types/navigation";
+import { Product } from "../../types/Product";
+import { fetchProducts } from "../../services/api";
 
 const tabs = ["All", "Apparel", "Dress", "T-shirt", "Bag"];
 
+// Category mapping for fake store API categories
+const categoryMapping = {
+  All: null,
+  Apparel: ["men's clothing", "women's clothing"],
+  Dress: ["women's clothing"],
+  "T-shirt": ["men's clothing"],
+  Bag: ["jewelery"], // Using jewelery as placeholder for bags since fake store doesn't have bags
+};
+
 export default function NewArrival() {
+  const navigation = useNavigation<DrawerNavigationProp<RootParamList>>();
   const [activeTab, setActiveTab] = useState("All");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch products from API
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchProducts();
+        setProducts(data);
+        setFilteredProducts(data.slice(0, 4)); // Show first 4 products initially
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
+  // Filter products based on active tab
+  useEffect(() => {
+    if (products.length === 0) return;
+
+    let filtered = products;
+
+    if (activeTab !== "All") {
+      const categories = categoryMapping[activeTab];
+      if (categories) {
+        filtered = products.filter((product) =>
+          categories.includes(product.category)
+        );
+      }
+    }
+
+    // Always show maximum 4 products in grid
+    setFilteredProducts(filtered.slice(0, 4));
+  }, [activeTab, products]);
 
   const handleTabPress = (tab: string) => {
     setActiveTab(tab);
   };
 
-  return (
-    <View style={{ padding: theme.spacing.md }}>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 18,
-            fontFamily: theme.fonts.tenorSans,
-            lineHeight: 40,
-          }}
-        >
-          New Arrival
-        </Text>
+  const handleProductPress = (productId: string) => {
+    navigation.navigate("ProductDetail", { productId });
+  };
 
+  const renderProduct = ({ item }: { item: Product }) => (
+    <ProductCard product={item} onPress={() => handleProductPress(item.id)} />
+  );
+
+  if (loading) {
+    return (
+      <View style={[styles.container, styles.centerContent]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={styles.loadingText}>Loading products...</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>New Arrival</Text>
         <LineSvg />
       </View>
 
@@ -57,24 +127,70 @@ export default function NewArrival() {
         ))}
       </View>
 
-      <ProductCard
-        product={undefined}
-        onPress={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      {/* Products Grid */}
+      {filteredProducts.length > 0 ? (
+        <FlatList
+          data={filteredProducts}
+          renderItem={renderProduct}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          scrollEnabled={false}
+          contentContainerStyle={styles.gridContainer}
+          columnWrapperStyle={styles.row}
+        />
+      ) : (
+        <View style={styles.centerContent}>
+          <Text style={styles.noProductsText}>
+            No products available for this category
+          </Text>
+        </View>
+      )}
+
+      <View style={styles.footer}>
+        <TouchableOpacity
+          style={styles.exploreButton}
+          onPress={() =>
+            navigation.navigate("Collection", { collection: "Women" })
+          }
+        >
+          <Text style={styles.exploreText}>Explore More</Text>
+          <MaterialIcons
+            name="arrow-forward"
+            color={theme.colors.text}
+            size={16}
+          />
+        </TouchableOpacity>
+        <LineSvg />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    padding: theme.spacing.md,
+  },
+  centerContent: {
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 200,
+  },
+  header: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    textAlign: "center",
+    fontSize: 18,
+    fontFamily: theme.fonts.tenorSans,
+    lineHeight: 40,
+  },
   tabContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
     marginTop: theme.spacing.lg,
     marginBottom: theme.spacing.lg,
-  
   },
   tabItem: {
     alignItems: "center",
@@ -89,9 +205,41 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: "#FF0000", // Red dot
+    backgroundColor: "#FF0000",
     marginTop: 4,
     position: "absolute",
     bottom: -2,
+  },
+  gridContainer: {
+    paddingVertical: theme.spacing.md,
+  },
+  row: {
+    justifyContent: "space-between",
+    marginBottom: theme.spacing.md,
+  },
+  loadingText: {
+    marginTop: theme.spacing.sm,
+    fontSize: 16,
+    color: theme.colors.greyScale,
+  },
+  noProductsText: {
+    fontSize: 16,
+    color: theme.colors.greyScale,
+    textAlign: "center",
+  },
+  footer: {
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 48,
+    marginTop: theme.spacing.lg,
+  },
+  exploreButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: theme.spacing.sm,
+    justifyContent: "center",
+  },
+  exploreText: {
+    fontSize: 16,
   },
 });

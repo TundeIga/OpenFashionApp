@@ -8,6 +8,7 @@ export type RootParamList = {
   Blog: undefined;
   StoreLocator: undefined;
   Cart: undefined;
+  ProductDetail: { productId: string }; // Product detail screen with productId param
   Collection: {collection: string}; // Add collection screen with params
   // Add subcategory screens as needed, e.g., Apparel, Bag, Shoes, etc.
   Apparel: undefined;
