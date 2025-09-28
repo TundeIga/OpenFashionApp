@@ -17,20 +17,23 @@ import { RootParamList } from "../../types/navigation";
 import { Product } from "../../types/Product";
 import { fetchProducts } from "../../services/api";
 
-const tabs = ["All", "Apparel", "Dress", "T-shirt", "Bag"];
+// Define tab type for better type safety
+type TabType = "All" | "Apparel" | "Dress" | "T-shirt" | "Jewelery";
 
-// Category mapping for fake store API categories
-const categoryMapping = {
+const tabs: TabType[] = ["All", "Apparel", "Dress", "T-shirt", "Jewelery"];
+
+// Category mapping for store API categories with proper typing
+const categoryMapping: Record<TabType, string[] | null> = {
   All: null,
   Apparel: ["men's clothing", "women's clothing"],
   Dress: ["women's clothing"],
   "T-shirt": ["men's clothing"],
-  Bag: ["jewelery"], // Using jewelery as placeholder for bags since fake store doesn't have bags
+  Jewelery: ["jewelery"],
 };
 
 export default function NewArrival() {
   const navigation = useNavigation<DrawerNavigationProp<RootParamList>>();
-  const [activeTab, setActiveTab] = useState("All");
+  const [activeTab, setActiveTab] = useState<TabType>("All"); // Type the state
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,7 +63,7 @@ export default function NewArrival() {
     let filtered = products;
 
     if (activeTab !== "All") {
-      const categories = categoryMapping[activeTab];
+      const categories = categoryMapping[activeTab]; // No more TypeScript error!
       if (categories) {
         filtered = products.filter((product) =>
           categories.includes(product.category)
@@ -72,7 +75,8 @@ export default function NewArrival() {
     setFilteredProducts(filtered.slice(0, 4));
   }, [activeTab, products]);
 
-  const handleTabPress = (tab: string) => {
+  const handleTabPress = (tab: TabType) => {
+    // Type the parameter
     setActiveTab(tab);
   };
 
