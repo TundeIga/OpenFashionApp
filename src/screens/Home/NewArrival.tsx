@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 48,
-    marginTop: theme.spacing.lg,
+    marginTop: theme.spacing.sm,
   },
   exploreButton: {
     flexDirection: "row",
