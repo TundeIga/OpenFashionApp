@@ -16,6 +16,12 @@ import { useNavigation } from "@react-navigation/native";
 import { RootParamList } from "../../types/navigation";
 import { Product } from "../../types/Product";
 import { fetchProducts } from "../../services/api";
+import Prada from '../../../assets/icons/Prada.svg'
+import Gucci from '../../../assets/icons/Gucci.svg'
+import Boss from '../../../assets/icons/Boss.svg'
+import Catier from '../../../assets/icons/Catier.svg'
+import Burberry from '../../../assets/icons/Burberry.svg'
+import Tiffany from '../../../assets/icons/Tiffany & Co.svg'
 
 // Define tab type for better type safety
 type TabType = "All" | "Apparel" | "Dress" | "T-shirt" | "Jewelery";
@@ -164,6 +170,15 @@ export default function NewArrival() {
             size={16}
           />
         </TouchableOpacity>
+      </View>
+
+{/* Brands */}
+      <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
+
+        <LineSvg />
+        <View style={{marginVertical: 20}}>
+<Prada/> <Burberry/> <Boss/> <Catier/> <Gucci/> <Tiffany/>
+        </View>
         <LineSvg />
       </View>
     </View>
