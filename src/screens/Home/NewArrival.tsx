@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  ImageBackground,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ProductCard } from "../../components/ProductCard";
 import { theme } from "../../utils/theme";
 import LineSvg from "../../../assets/icons/3.svg";
@@ -16,12 +17,13 @@ import { useNavigation } from "@react-navigation/native";
 import { RootParamList } from "../../types/navigation";
 import { Product } from "../../types/Product";
 import { fetchProducts } from "../../services/api";
-import Prada from '../../../assets/icons/Prada.svg'
-import Gucci from '../../../assets/icons/Gucci.svg'
-import Boss from '../../../assets/icons/Boss.svg'
-import Catier from '../../../assets/icons/Catier.svg'
-import Burberry from '../../../assets/icons/Burberry.svg'
-import Tiffany from '../../../assets/icons/Tiffany & Co.svg'
+import Prada from "../../../assets/icons/Prada.svg";
+import Gucci from "../../../assets/icons/Gucci.svg";
+import Boss from "../../../assets/icons/Boss.svg";
+import Catier from "../../../assets/icons/Catier.svg";
+import Burberry from "../../../assets/icons/Burberry.svg";
+import Tiffany from "../../../assets/icons/Tiffany & Co.svg";
+import { Video, ResizeMode, AVPlaybackStatus } from "expo-av";
 
 // Define tab type for better type safety
 type TabType = "All" | "Apparel" | "Dress" | "T-shirt" | "Jewelery";
@@ -36,6 +38,11 @@ const categoryMapping: Record<TabType, string[] | null> = {
   "T-shirt": ["men's clothing"],
   Jewelery: ["jewelery"],
 };
+// const video = useRef(null);
+
+const collectionImg = require("../../../assets/images/image 12.png");
+const autumnImg = require("../../../assets/images/image 9.png");
+const fashionVideo = require("../../../assets/video/fashion.mov");
 
 export default function NewArrival() {
   const navigation = useNavigation<DrawerNavigationProp<RootParamList>>();
@@ -43,6 +50,8 @@ export default function NewArrival() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+    const video = useRef<Video>(null);
+    const [status, setStatus] = useState<AVPlaybackStatus>();
 
   // Fetch products from API
   useEffect(() => {
@@ -104,7 +113,7 @@ export default function NewArrival() {
   }
 
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.header}>
         <Text style={styles.title}>New Arrival</Text>
         <LineSvg />
@@ -172,15 +181,157 @@ export default function NewArrival() {
         </TouchableOpacity>
       </View>
 
-{/* Brands */}
-      <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
-
+      {/* Brands */}
+      <View
+        style={{
+          // justifyContent: "center",
+          alignItems: "center",
+          marginTop: 20,
+        }}
+      >
         <LineSvg />
-        <View style={{marginVertical: 20}}>
-<Prada/> <Burberry/> <Boss/> <Catier/> <Gucci/> <Tiffany/>
+        <View style={{ marginVertical: 20, rowGap: 15 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 30 }}>
+            <Prada /> <Burberry /> <Boss />
+          </View>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 30 }}>
+            <Catier /> <Gucci /> <Tiffany />
+          </View>
         </View>
         <LineSvg />
       </View>
+
+      {/* Collections */}
+      <View style={{ marginVertical: 30 }}>
+        <Text
+          style={{
+            fontFamily: theme.fonts.tenorSans,
+            fontSize: 18,
+            lineHeight: 40,
+            textAlign: "center",
+            marginBottom: 20,
+          }}
+        >
+          COLLECTIONS
+        </Text>
+        <ImageBackground
+          source={collectionImg}
+          resizeMode="cover"
+          style={{ width: "100%", height: 260 }}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "flex-end",
+              paddingRight: 20,
+              marginTop: 35,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 160,
+                opacity: 0.5,
+                fontFamily: theme.fonts.bodoniItalic,
+                lineHeight: 244,
+              }}
+            >
+              10
+            </Text>
+            <View
+              style={{
+                alignItems: "flex-end",
+                position: "absolute",
+                right: 20,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: theme.fonts.bodoniItalic,
+                  color: theme.colors.offWhite,
+                  lineHeight: 63,
+                  fontSize: 42,
+                }}
+              >
+                October
+              </Text>
+              <Text
+                style={{
+                  fontSize: 13,
+                  fontFamily: theme.fonts.tenorSans,
+                  lineHeight: 29,
+                  color: theme.colors.offWhite,
+                  letterSpacing: 6,
+                  marginTop: -15,
+                }}
+              >
+                COLLECTION
+              </Text>
+            </View>
+          </View>
+        </ImageBackground>
+        <ImageBackground
+          source={autumnImg}
+          resizeMode="contain"
+          style={{
+            width: 260,
+            height: 296,
+            marginVertical: 30,
+            justifyContent: "center",
+            alignSelf: "center",
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "flex-end",
+              paddingRight: 20,
+              marginTop: 35,
+            }}
+          >
+            <View
+              style={{
+                alignItems: "flex-end",
+                position: "absolute",
+                right: 25,
+                top: -10,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: theme.fonts.bodoniItalic,
+                  opacity: 0.6,
+                  lineHeight: 63,
+                  fontSize: 42,
+                }}
+              >
+                Autumn
+              </Text>
+              <Text
+                style={{
+                  fontSize: 13,
+                  fontFamily: theme.fonts.tenorSans,
+                  lineHeight: 25,
+                  letterSpacing: 5,
+                  marginTop: -15,
+                }}
+              >
+                COLLECTION
+              </Text>
+            </View>
+          </View>
+        </ImageBackground>
+      </View>
+      <Video
+        ref={video}
+        source={require("../../../assets/video/fashion.mov")}
+        style={{ width: '100%', height: 200, marginBottom: 20 }}
+        useNativeControls
+        resizeMode={ResizeMode.COVER}
+        isLooping
+        onPlaybackStatusUpdate={(status) => setStatus(status)}
+      />
     </View>
   );
 }
@@ -197,6 +348,7 @@ const styles = StyleSheet.create({
   header: {
     justifyContent: "center",
     alignItems: "center",
+    padding: theme.spacing.md,
   },
   title: {
     textAlign: "center",
@@ -230,7 +382,7 @@ const styles = StyleSheet.create({
     bottom: -2,
   },
   gridContainer: {
-    paddingVertical: theme.spacing.md,
+    padding: theme.spacing.md,
   },
   row: {
     justifyContent: "space-between",
