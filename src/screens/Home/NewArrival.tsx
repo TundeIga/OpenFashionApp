@@ -38,7 +38,7 @@ const categoryMapping: Record<TabType, string[] | null> = {
   "T-shirt": ["men's clothing"],
   Jewelery: ["jewelery"],
 };
-// const video = useRef(null);
+
 
 const collectionImg = require("../../../assets/images/image 12.png");
 const autumnImg = require("../../../assets/images/image 9.png");
@@ -78,7 +78,7 @@ export default function NewArrival() {
     let filtered = products;
 
     if (activeTab !== "All") {
-      const categories = categoryMapping[activeTab]; // No more TypeScript error!
+      const categories = categoryMapping[activeTab];
       if (categories) {
         filtered = products.filter((product) =>
           categories.includes(product.category)
@@ -332,6 +332,8 @@ export default function NewArrival() {
         isLooping
         onPlaybackStatusUpdate={(status) => setStatus(status)}
       />
+
+      <Text>Just for you</Text>
     </View>
   );
 }
