@@ -52,6 +52,29 @@ export default function NewArrival() {
   const [loading, setLoading] = useState(true);
     const video = useRef<Video>(null);
     const [status, setStatus] = useState<AVPlaybackStatus>();
+    const [carouselProducts, setCarouselProducts] = useState<Product[]>([]);
+
+    // Add this useEffect to load dress products for carousel
+    useEffect(() => {
+      if (products.length === 0) return;
+
+      const dressProducts = products
+        .filter((product) => product.category === "women's clothing")
+        .slice(0, 5); // Get max 5 dress products
+
+      setCarouselProducts(dressProducts);
+    }, [products]);
+
+    // Add this render function for carousel items
+    const renderCarouselProduct = ({ item }: { item: Product }) => (
+      <ProductCard
+        product={item}
+        onPress={() => handleProductPress(item.id)}
+        cardStyle={{ width: 254, height: 311 }}
+        imageContainerStyle={{ height: 311, }}
+        textStyle={{fontSize: 16, marginTop: 30}}
+      />
+    );
 
   // Fetch products from API
   useEffect(() => {
@@ -326,14 +349,32 @@ export default function NewArrival() {
       <Video
         ref={video}
         source={require("../../../assets/video/fashion.mov")}
-        style={{ width: '100%', height: 200, marginBottom: 20 }}
+        style={{ width: "100%", height: 200, marginBottom: 20 }}
         useNativeControls
         resizeMode={ResizeMode.COVER}
         isLooping
         onPlaybackStatusUpdate={(status) => setStatus(status)}
       />
 
-      <Text>Just for you</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>JUST FOR YOU </Text>
+        <LineSvg />
+      </View>
+      {/* display dress below in a carousel, just 4 or 5 and make use of the product card, add height 311, width 254 to the card background */}
+      <FlatList
+        data={carouselProducts}
+        renderItem={renderCarouselProduct}
+        keyExtractor={(item) => item.id}
+        horizontal
+        scrollEnabled
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: theme.spacing.md,
+          gap: theme.spacing.md,
+        }}
+        snapToInterval={254 + theme.spacing.md * 2}
+        decelerationRate="fast"
+      />
     </View>
   );
 }
